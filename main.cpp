@@ -1,24 +1,35 @@
+#include <iomanip>
 #include <iostream>
 
-// TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-int main() {
-    // TIP Press <shortcut actionId="RenameElement"/> when your caret is at the
-    // <b>lang</b> variable name to see how CLion can help you rename it.
-    auto lang = "C++";
-    std::cout << "Hello and welcome to " << lang << "!\n";
+using namespace std;
 
-    for (int i = 1; i <= 5; i++) {
-        // TIP Press <shortcut actionId="Debug"/> to start debugging your code.
-        // We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/>
-        // breakpoint for you, but you can always add more by pressing
-        // <shortcut actionId="ToggleLineBreakpoint"/>.
-        std::cout << "i = " << i << std::endl;
+
+// reference notes
+// https://github.com/delboy8080/FileIO_Struct_SD2a/blob/master/main.cpp
+
+struct Stocks
+{
+    string name;
+    string category;
+    int yearFounded;
+    float moneyInvested;
+    float returnOnInvestment;
+};
+
+void display(const Stocks& stocks)
+{
+    cout << left << setw(15) << stocks.name;
+    cout << setw(5) << stocks.category;
+    cout << setw(10) << stocks.yearFounded;
+    cout << setw(50) << stocks.moneyInvested;
+    cout << setw(30) << stocks.returnOnInvestment;
+    cout << endl;
+}
+
+
+
+
+int main()
+{
     }
 
-    return 0;
-}
-// TIP See CLion help at <a
-// href="https://www.jetbrains.com/help/clion/">jetbrains.com/help/clion/</a>.
-//  Also, you can try interactive lessons for CLion by selecting
-//  'Help | Learn IDE Features' from the main menu.

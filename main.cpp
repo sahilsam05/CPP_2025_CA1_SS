@@ -61,13 +61,24 @@ void readCSV(const string& filename, vector<Stocks>& stockList)
     }
 }
 
+int searchStockByName(const vector<Stocks>& stockList,const string& name)
+{
+    for (int i = 0; i < stockList.size(); i++)
+        {
+        if (stockList[i].name == name)
+            return i;
+    }
+}
+
 
 
 int main()
 {
+
     vector<Stocks> stockList;
     readCSV("Stocks.csv", stockList);
     displayStocks(stockList);
     return 0;
-    }
+
+}
 

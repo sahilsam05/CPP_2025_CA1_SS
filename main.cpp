@@ -40,36 +40,34 @@ void parseLine(string line,Stocks &stocks) {
 
 //https://github.com/delboy8080/FileIO_Struct_SD2a/blob/master/main.cpp
 
-void load(string filename, vector<Stocks> &data)
+// Function to read CSV file and store data in a vector
+void readCSV(const string& filename, vector<Stocks>& stockList)
 {
     ifstream file(filename);
-
     if (file)
-        {
-         string line;
+    {
+        string line;
         while (getline(file, line))
             {
-            Stocks stock;
+                Stocks stock;
             parseLine(line, stock);
-            data.push_back(stock);
+            stockList.push_back(stock);
         }
         file.close();
     }
     else
     {
-        cout << "Unable to open file" << endl;
+        cout << "File could not be opened" << endl;
     }
 }
-
-void writeToFile(const vector<Stocks> &data)
-{
-
-}
-
 
 
 
 int main()
 {
+    vector<Stocks> stockList;
+    readCSV("Stocks.csv", stockList);
+    displayStocks(stockList);
+    return 0;
     }
 

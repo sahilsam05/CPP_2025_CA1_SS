@@ -31,5 +31,6 @@ void display(const Stocks& stocks)
 
 int main()
 {
+    s
     }
 

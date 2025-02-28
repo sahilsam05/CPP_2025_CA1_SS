@@ -40,7 +40,7 @@ void readCSV(const string& filename, vector<Stock>& stocks)
     while (getline(file, line))
         {
         stringstream ss(line);
-        string temp;
+        string temp; // Declaring a temporary string variable
         Stock stock;
 
         // Read each column
@@ -53,11 +53,16 @@ void readCSV(const string& filename, vector<Stock>& stocks)
         getline(ss, temp, ',');
         stock.returnValue = stod(temp);
 
-        stocks.push_back(stock);
+        stocks.push_back(stock); //After push_back(stock) is called:
+
+       // The stock object is added to the stocks vector.
+       // The stocks vector now contains one Stock object.
     }
 }
 
 // Stage 3 -  part 1 display the functions neatly
+// used a vector
+// implemented a function to populate vector
 
 void displayStocks(const vector<Stock>& stocks, int index = -1)
 {
@@ -213,13 +218,19 @@ int main()
     vector<Stock> stocks;
     readCSV("Stocks.csv", stocks);
 
+    // https://cplusplus.com/forum/beginner/21033/
+
     int choice;
     do
     {
         displayMenu();
+
         cin >> choice;
         cin.ignore(); // Clear input buffer
-
+        //  cin.ignore() tells the input stream to ignore (or discard) one character from the input buffer.
+        //  By default, it discards one character, which is usually the newline character ('\n'),
+        //  and clears the buffer for the next input operation.
+        //  This prevents the newline from interfering with subsequent inputs.
         if (choice == 1)
         {
             displayStocks(stocks);

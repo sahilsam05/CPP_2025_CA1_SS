@@ -201,6 +201,4 @@ int main()
         cout << "\nNewest Company:\n";
         cout << "Name: " << highestStock.name << " | Year Founded: " << highestStock.yearFounded << endl;
     }
-
-
 }

@@ -1,84 +1,70 @@
-#include <iomanip>
 #include <iostream>
-#include <vector>
 #include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
 
 using namespace std;
 
-
-// reference notes
-// https://github.com/delboy8080/FileIO_Struct_SD2a/blob/master/main.cpp
-
-struct Stocks
+struct Stock
 {
     string name;
     string category;
     int yearFounded;
-    float moneyInvested;
-    float returnOnInvestment;
+    double moneyInvested;
+    double returnValue;
 };
 
-void displayStocks(const vector<Stocks>& stockList)
-{
-    cout << left << setw(25) << "Stock Name"
-         << setw(15) << "Category"
-         << setw(15) << "Year Founded"
-         << setw(20) << "Money Invested"
-         << setw(15) << "ROI" << endl;
-    cout << string(90, '-') << endl;
-}
-
-void parseLine(string line,Stocks &stocks) {
-    stringstream ss(line);
-    getline(ss, stocks.name, ',');
-    getline(ss, stocks.category, ',');
-    stocks.yearFounded = stoi(stocks.name);
-    stocks.moneyInvested = stoi(stocks.category);
-    stocks.returnOnInvestment = stoi(stocks.name);
-
-}
-
-//https://github.com/delboy8080/FileIO_Struct_SD2a/blob/master/main.cpp
-
-// Function to read CSV file and store data in a vector
-void readCSV(const string& filename, vector<Stocks>& stockList)
+void readCSV(const string& filename, vector<Stock>& stocks)
 {
     ifstream file(filename);
-    if (file)
-    {
-        string line;
-        while (getline(file, line))
-            {
-                Stocks stock;
-            parseLine(line, stock);
-            stockList.push_back(stock);
-        }
-        file.close();
-    }
-    else
-    {
-        cout << "File could not be opened" << endl;
-    }
-}
+    string line;
 
-int searchStockByName(const vector<Stocks>& stockList,const string& name)
-{
-    for (int i = 0; i < stockList.size(); i++)
+    // Skip the header line
+    getline(file, line);
+
+    while (getline(file, line))
         {
-        if (stockList[i].name == name)
-            return i;
+        stringstream ss(line);
+        string token;
+        Stock stock;
+
+        // Read each column
+        getline(ss, stock.name, ',');
+        getline(ss, stock.category, ',');
+        getline(ss, token, ',');
+        stock.yearFounded = stoi(token);
+        getline(ss, token, ',');
+        stock.moneyInvested = stod(token);
+        getline(ss, token, ',');
+        stock.returnValue = stod(token);
+
+        stocks.push_back(stock);
     }
 }
 
+void displayStocks(const vector<Stock>& stocks)
+{
+    cout << left << setw(20) << "Name"
+       << setw(20) << "Category"
+       << setw(15) << "Year Founded"
+       << setw(15) << "Money Invested"
+       << setw(15) << "Return Value" << endl;
+    cout << string(80, '-') << endl;
 
+    for (const auto& stock : stocks) {
+        cout << "Name: " << stock.name << "\n"
+             << "Category: " << stock.category << "\n"
+             << "Year Founded: " << stock.yearFounded << "\n"
+             << "Money Invested: " << stock.moneyInvested << "\n"
+             << "Return: " << stock.returnValue << "\n\n";
+    }
+}
 
 int main()
 {
-
-    vector<Stocks> stockList;
-    readCSV("Stocks.csv", stockList);
-    displayStocks(stockList);
+    vector<Stock> stocks;
+    readCSV("Stocks.csv", stocks);
+    displayStocks(stocks);
     return 0;
-
 }
-

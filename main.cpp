@@ -3,8 +3,12 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <iomanip>
 
 using namespace std;
+
+// Stage 1 - Data Generated
+// Stage 2 part 1 struct created
 
 struct Stock
 {
@@ -14,6 +18,8 @@ struct Stock
     double moneyInvested;
     double returnValue;
 };
+
+// Stage 2 part 2 Read the CSV File
 
 void readCSV(const string& filename, vector<Stock>& stocks)
 {
@@ -43,28 +49,67 @@ void readCSV(const string& filename, vector<Stock>& stocks)
     }
 }
 
-void displayStocks(const vector<Stock>& stocks)
+// Stage 3 -  part 1 display the functions neatly
+
+void displayStocks(const vector<Stock>& stocks, int index = -1)
 {
-    cout << left << setw(20) << "Name"
+    if (index == -1) {
+        cout << left << setw(35) << "Name"
        << setw(20) << "Category"
        << setw(15) << "Year Founded"
-       << setw(15) << "Money Invested"
-       << setw(15) << "Return Value" << endl;
-    cout << string(80, '-') << endl;
+       << setw(18) << "Money Invested"
+       << setw(15) << "ROI" << endl;
+        cout << string(103, '-') << endl;
 
-    for (const auto& stock : stocks) {
-        cout << "Name: " << stock.name << "\n"
-             << "Category: " << stock.category << "\n"
-             << "Year Founded: " << stock.yearFounded << "\n"
-             << "Money Invested: " << stock.moneyInvested << "\n"
-             << "Return: " << stock.returnValue << "\n\n";
+
+        for (const auto& stock : stocks)
+        {
+            cout << left << setw(35) << stock.name
+                 << setw(20) << stock.category
+                 << setw(15) << stock.yearFounded
+                 << setw(18) << fixed << setprecision(2) << stock.moneyInvested
+                 << setw(15) << fixed << setprecision(2) << stock.returnValue << endl;
+        }
     }
+    else if (index >= 0 && index < stocks.size())
+    {
+       const Stock& stock = stocks[index];
+        cout << left << setw(35) << stock.name
+              << setw(20) << stock.category
+              << setw(15) << stock.yearFounded
+              << setw(18) << fixed << setprecision(2) << stock.moneyInvested
+              << setw(15) << fixed << setprecision(2) << stock.returnValue << endl;
+    }
+    else
+    {
+        cout << "STOCK NOT FOUND" << endl;
+    }
+}
+
+// Stage 3 - Search Function
+int findStockByName(const vector<Stock>& stocks, const string& name)
+{
+    for (size_t i = 0; i < stocks.size(); i++)
+    {
+        if (stocks[i].name == name)
+            return i;
+    }
+    return -1;
 }
 
 int main()
 {
     vector<Stock> stocks;
     readCSV("Stocks.csv", stocks);
-    displayStocks(stocks);
+
+    string Searchstock;
+    cout << "Enter search stock name: ";
+    getline(cin, Searchstock);
+
+    int stockIndex = findStockByName(stocks, Searchstock);
+
+    displayStocks(stocks, stockIndex);
+
+
     return 0;
 }

@@ -172,6 +172,8 @@ int findStats(const vector<Stock>& stocks, Stock& highest, Stock& lowest)
 
 
 
+
+
 int main()
 {
     vector<Stock> stocks;

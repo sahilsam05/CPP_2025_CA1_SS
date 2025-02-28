@@ -41,18 +41,18 @@ void readCSV(const string& filename, vector<Stock>& stocks)
     while (getline(file, line))
         {
         stringstream ss(line);
-        string token;
+        string temp;
         Stock stock;
 
         // Read each column
         getline(ss, stock.name, ',');
         getline(ss, stock.category, ',');
-        getline(ss, token, ',');
-        stock.yearFounded = stoi(token);
-        getline(ss, token, ',');
-        stock.moneyInvested = stod(token);
-        getline(ss, token, ',');
-        stock.returnValue = stod(token);
+        getline(ss, temp, ',');
+        stock.yearFounded = stoi(temp);
+        getline(ss, temp, ',');
+        stock.moneyInvested = stod(temp);
+        getline(ss, temp, ',');
+        stock.returnValue = stod(temp);
 
         stocks.push_back(stock);
     }
@@ -72,13 +72,13 @@ void displayStocks(const vector<Stock>& stocks, int index = -1)
         cout << string(103, '-') << endl;
 
 
-        for (const auto& stock : stocks)
+        for (int i = 0; i < stocks.size(); i++)
         {
-            cout << left << setw(35) << stock.name
-                 << setw(20) << stock.category
-                 << setw(15) << stock.yearFounded
-                 << setw(18) << fixed << setprecision(2) << stock.moneyInvested
-                 << setw(15) << fixed << setprecision(2) << stock.returnValue << endl;
+            cout << left << setw(35) << stocks[i].name
+                 << setw(20) << stocks[i].category
+                 << setw(15) << stocks[i].yearFounded
+                 << setw(18) << fixed << setprecision(2) << stocks[i].moneyInvested
+                 << setw(15) << fixed << setprecision(2) << stocks[i].returnValue << endl;
         }
     }
     else if (index >= 0 && index < stocks.size())
@@ -111,7 +111,7 @@ void displayStocks(const vector<Stock>& stocks, int index = -1)
 
 int findStockByName(const vector<Stock>& stocks, const string& name)
 {
-    for (size_t i = 0; i < stocks.size(); i++)
+    for (int i = 0; i < stocks.size(); i++)
     {
         if (stocks[i].name == name)
             return i;
@@ -134,6 +134,8 @@ int findStockByName(const vector<Stock>& stocks, const string& name)
 
 // https://stackoverflow.com/questions/40617450/highest-and-lowest-average-c
 
+// Stage 3 - part 5
+
 int findStats(const vector<Stock>& stocks, Stock& highest, Stock& lowest)
 {
     if (stocks.empty())
@@ -146,19 +148,27 @@ int findStats(const vector<Stock>& stocks, Stock& highest, Stock& lowest)
     lowest = stocks[0];
     int sum = 0;
 
-    for (const auto& stock : stocks)
+    for (int i = 0; i < stocks.size(); i++)
     {
-        sum += stock.yearFounded;
+        sum += stocks[i].yearFounded;
 
-        if (stock.yearFounded > highest.yearFounded)
-            highest = stock;
+        if (stocks[i].yearFounded > highest.yearFounded)
+            highest = stocks[i];
 
-        if (stock.yearFounded < lowest.yearFounded)
-            lowest = stock;
+        if (stocks[i].yearFounded < lowest.yearFounded)
+            lowest = stocks[i];
     }
 
     return sum / stocks.size(); // Return average as int
 }
+
+// Stage 3 part 7
+
+// Reference
+// https://github.com/delboy8080/STL_Exercises/blob/master/Solutions.cpp
+// Q5
+
+
 
 
 
@@ -175,17 +185,7 @@ int main()
 
     displayStocks(stocks, stockIndex);
 
-    // // Count the occurrences of each category
-    // map<string, int> categoryCount = findStockByCategory(stocks);
-    //
-    // // Display the category counts
-    // cout << "\nCategory counts:" << endl;
-    // for (const auto& entry : categoryCount)
-    // {
-    //     cout << entry.first << ": " << entry.second << endl;
-    // }
-    //
-    // return 0;
+//https://stackoverflow.com/questions/71535238/c-calculate-the-biggest-smallest-and-average-number-in-different-functions-an
 
     Stock highestStock, lowestStock;
     int averageYear = findStats(stocks, highestStock, lowestStock);
@@ -200,5 +200,6 @@ int main()
 
         cout << "\nNewest Company:\n";
         cout << "Name: " << highestStock.name << " | Year Founded: " << highestStock.yearFounded << endl;
+
     }
 }

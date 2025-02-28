@@ -53,7 +53,8 @@ void readCSV(const string& filename, vector<Stock>& stocks)
 
 void displayStocks(const vector<Stock>& stocks, int index = -1)
 {
-    if (index == -1) {
+    if (index == -1)
+    {
         cout << left << setw(35) << "Name"
        << setw(20) << "Category"
        << setw(15) << "Year Founded"
@@ -73,6 +74,13 @@ void displayStocks(const vector<Stock>& stocks, int index = -1)
     }
     else if (index >= 0 && index < stocks.size())
     {
+        cout << left << setw(35) << "Name"
+       << setw(20) << "Category"
+       << setw(15) << "Year Founded"
+       << setw(18) << "Money Invested"
+       << setw(15) << "ROI" << endl;
+        cout << string(103, '-') << endl;
+
        const Stock& stock = stocks[index];
         cout << left << setw(35) << stock.name
               << setw(20) << stock.category

@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include <iomanip>
-#include <map>
 
 using namespace std;
 
@@ -169,9 +168,44 @@ int findStats(const vector<Stock>& stocks, Stock& highest, Stock& lowest)
 // Q5
 
 
+// Function to display a subset of data (stocks by category)
+
+void displayStocksByCategory(const vector<Stock>& stocks, const string& category)
+{
+    cout << left << setw(35) << "Name"
+         << setw(20) << "Category"
+         << setw(15) << "Year Founded"
+         << setw(18) << "Money Invested"
+         << setw(15) << "ROI" << endl;
+    cout << string(103, '-') << endl;
+
+    // Loop through stocks and print those that match the category
+    for (int i = 0; i < stocks.size(); i++)
+    {
+        if (stocks[i].category == category)
+        {
+            cout << left << setw(35) << stocks[i].name
+                 << setw(20) << stocks[i].category
+                 << setw(15) << stocks[i].yearFounded
+                 << setw(18) << fixed << setprecision(2) << stocks[i].moneyInvested
+                 << setw(15) << fixed << setprecision(2) << stocks[i].returnValue << endl;
+        }
+    }
+}
 
 
+// Function to display menu
 
+void displayMenu()
+{
+    cout << "\nStock Management System\n";
+    cout << "1. Display all stocks\n";
+    cout << "2. Search for a stock by name\n";
+    cout << "3. Display stocks by category\n";
+    cout << "4. Find highest, lowest, and average year founded\n";
+    cout << "5. Exit\n";
+    cout << "Enter your choice: ";
+}
 
 
 int main()
@@ -179,29 +213,55 @@ int main()
     vector<Stock> stocks;
     readCSV("Stocks.csv", stocks);
 
-    string Searchstock;
-    cout << "Enter search stock name: ";
-    getline(cin, Searchstock);
-
-    int stockIndex = findStockByName(stocks, Searchstock);  // Search for stock by name
-
-    displayStocks(stocks, stockIndex);
-
-//https://stackoverflow.com/questions/71535238/c-calculate-the-biggest-smallest-and-average-number-in-different-functions-an
-
-    Stock highestStock, lowestStock;
-    int averageYear = findStats(stocks, highestStock, lowestStock);
-
-    if (averageYear != -1) // Ensure data exists
+    int choice;
+    do
     {
-        cout << "\nStock Year Statistics:\n";
-        cout << "Average Year Founded: " << averageYear << endl;
+        displayMenu();
+        cin >> choice;
+        cin.ignore(); // Clear input buffer
 
-        cout << "\nOldest Company:\n";
-        cout << "Name: " << lowestStock.name << " | Year Founded: " << lowestStock.yearFounded << endl;
+        if (choice == 1)
+        {
+            displayStocks(stocks);
+        }
+        else if (choice == 2)
+        {
+            string searchName;
+            cout << "Enter stock name: ";
+            getline(cin, searchName);
 
-        cout << "\nNewest Company:\n";
-        cout << "Name: " << highestStock.name << " | Year Founded: " << highestStock.yearFounded << endl;
+            int index = findStockByName(stocks, searchName);
+            displayStocks(stocks, index);
+        }
+        else if (choice == 3)
+        {
+            string category;
+            cout << "Enter category to search for: ";
+            getline(cin, category);
+            displayStocksByCategory(stocks, category);
+        }
+        else if (choice == 4)
+        {
+            Stock highest, lowest;
+            int avgYear = findStats(stocks, highest, lowest);
 
-    }
+            if (avgYear != -1)
+            {
+                cout << "\nStock Year Statistics:\n";
+                cout << "Average Year Founded: " << avgYear << endl;
+                cout << "Oldest Company: " << lowest.name << " (Founded: " << lowest.yearFounded << ")\n";
+                cout << "Newest Company: " << highest.name << " (Founded: " << highest.yearFounded << ")\n";
+            }
+        }
+        else if (choice == 5)
+        {
+            cout << "Exiting program. Goodbye!\n";
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 5);
+
+    return 0;
 }
